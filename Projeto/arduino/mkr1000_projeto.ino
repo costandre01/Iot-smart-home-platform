@@ -11,8 +11,8 @@
 #define DHTTYPE DHT11 // Tipo de sensor DHT
 DHT dht(DHTPIN, DHTTYPE); // Instanciar e declarar a class DHT
  
-char SSID[] = "labs";
-char PASS_WIFI[] = "1nv3nt@r2023_IPLEIRIA";
+char SSID[] = "YOUR_WIFI_SSID";
+char PASS_WIFI[] = "YOUR_WIFI_PASSWORD";
 char URL[] = "iot.dei.estg.ipleiria.pt";
 int PORTO = 80; // ou outro porto que esteja definido no servidor
 WiFiClient clienteWifi;

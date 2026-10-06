@@ -1,96 +1,160 @@
 # IoT Smart Home Platform
 
-Smart home monitoring and automation platform built using Raspberry Pi, REST APIs and a responsive web dashboard.
+Academic smart-home monitoring and automation project integrating a web dashboard, REST APIs, Raspberry Pi, Arduino-compatible hardware, sensors and actuators.
 
----
+> **Portfolio note:** the repository keeps the original hardware-oriented implementation, while `docs/` contains a browser-based **Demo Mode** that simulates the physical devices. This makes the project fully explorable without owning the original hardware.
 
-## Overview
+## Live Demo
 
-This project was developed as part of an academic initiative focused on IoT systems, web development and API communication.
+**GitHub Pages:** https://costandre01.github.io/Iot-smart-home-platform/
 
-The platform allows monitoring and controlling smart devices using multiple Raspberry Pi boards connected through REST APIs. Users can interact with sensors and actuators both physically and through a web dashboard.
+The public demo runs entirely in the browser and includes:
 
----
+- live simulated telemetry;
+- temperature and humidity monitoring;
+- air-quality values;
+- virtual movement/distance readings;
+- remote light, door, buzzer and fan controls;
+- simulated camera capture;
+- telemetry history;
+- persistent demo state using browser storage.
 
-## Features
+No Raspberry Pi, Arduino board, backend server or login is required for the public demo.
 
-- Real-time monitoring of sensors
-- Remote control of actuators through web interface
-- REST API communication between Raspberry Pi devices
-- Multi-user authentication system
-- Different user permission levels
-- Trigger actions physically or directly from the dashboard
-- Responsive and interactive web interface
-- Real-time device state updates
+## Original Project
 
----
+The original implementation was developed as an academic IoT project at ESTG. It connected physical devices to a PHP web application through REST endpoints.
+
+### Original architecture
+
+```text
+Web Dashboard ↔ PHP REST API ↔ Raspberry Pi / Arduino ↔ Sensors & Actuators
+```
+
+The hardware implementation includes:
+
+- Raspberry Pi GPIO integration;
+- HC-SR04 distance sensing;
+- buzzer control;
+- remote webcam capture;
+- Arduino/MKR Wi-Fi communication;
+- DHT11 temperature and humidity sensing;
+- MQ-135-based air-quality measurements;
+- servo-controlled door;
+- remotely controlled lighting;
+- GET/POST communication with the web API.
 
 ## Tech Stack
 
+**Web**
 - HTML5
 - CSS3
 - JavaScript
 - PHP
 - REST API
-- Raspberry Pi
 
----
+**IoT / Edge**
+- Python
+- Raspberry Pi GPIO
+- Arduino / MKR
+- DHT11
+- MQ-135
+- HC-SR04
+- Servo motor
+- Webcam integration
 
-## System Architecture
+**Portfolio Demo**
+- HTML5
+- CSS3
+- Vanilla JavaScript
+- LocalStorage
+- GitHub Pages
+
+## Repository Structure
 
 ```text
-Frontend Dashboard ↔ REST API ↔ Raspberry Pi ↔ Sensors & Actuators
+.
+├── docs/                       # Public static demo for GitHub Pages
+│   ├── index.html
+│   ├── styles.css
+│   └── app.js
+│
+└── Projeto/                    # Original academic implementation
+    ├── arduino/                # Arduino/MKR firmware
+    ├── code/                   # PHP UI components
+    ├── config/                 # PHP configuration
+    ├── css/                    # Original dashboard styles
+    ├── files/                  # Device state and historical sample data
+    ├── js/                     # Original dashboard logic
+    ├── query/                  # REST-style PHP endpoints
+    └── scripts/                # Raspberry Pi Python integration
 ```
 
----
+## Run the Public Demo Locally
 
-## Functionalities
+Because the demo is static, any simple HTTP server works.
 
-### Dashboard
-- Display sensor values in real time
-- Interactive controls for actuators
-- Device status visualization
-- User authentication system
-- Different user roles and permissions
+```bash
+cd docs
+python -m http.server 8000
+```
 
-### Hardware Integration
-- Communication between multiple Raspberry Pi devices
-- Physical triggers and automation events
-- Sensor data collection and processing
-- Bidirectional interaction between hardware and software
+Then open `http://localhost:8000`.
 
----
+## Run the Original PHP Application Locally
 
-## Preview
+The original application requires PHP and write access to `Projeto/files/`.
 
-Project dashboard interface and Raspberry Pi integration for real-time monitoring and automation.
+1. Create a local credentials file from the safe example:
 
----
+```bash
+cp Projeto/files/credenciais.example.txt Projeto/files/credenciais.txt
+```
 
-## Objectives
+The example account is:
 
-The main objective of this project was to create a smart home platform capable of integrating hardware and software components through APIs, allowing real-time monitoring and control from a web application.
+```text
+username: demo
+password: demo123
+```
 
-The project also focused on:
-- IoT communication
-- Web development
-- API integration
-- User management systems
-- Hardware/software interaction
+2. Start the PHP development server from the `Projeto` directory:
 
----
+```bash
+cd Projeto
+php -S localhost:8080
+```
 
-## Future Improvements
+3. Open `http://localhost:8080`.
 
-- Real-time notifications
-- Mobile application integration
-- MQTT communication support
+Physical sensor updates require the original Raspberry Pi / Arduino hardware. For portfolio purposes, use the static Demo Mode instead.
 
----
+## GitHub Pages Setup
 
-## Author
+In the GitHub repository:
 
-André Costa
+1. Open **Settings → Pages**.
+2. Under **Build and deployment**, select **Deploy from a branch**.
+3. Select branch **main** and folder **/docs**.
+4. Save.
 
-- GitHub: https://github.com/costandre01
-- LinkedIn: https://linkedin.com/in/andre-costa-/
+GitHub will publish the portfolio demo from `docs/`.
+
+## Security
+
+Hardware network credentials are intentionally excluded from the public source. Replace the placeholders in the Arduino sketches only in your private/local environment.
+
+`Projeto/files/credenciais.txt` is also ignored by Git. `credenciais.example.txt` exists only as a local-development example.
+
+If a secret was previously committed to Git history, removing it from the latest version does not erase the old commit. Treat previously published credentials as exposed and rotate them when applicable.
+
+## Why Demo Mode?
+
+The project was originally built around real hardware. The public Demo Mode replaces only the physical-device layer with simulated telemetry, allowing recruiters and other visitors to interact with the system immediately while keeping the original implementation available for review.
+
+## Authors
+
+- André Costa
+- Luís Bento
+
+Academic project · ESTG · 2024/2025

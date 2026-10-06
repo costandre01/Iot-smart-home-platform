@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Interactive demo of an academic IoT smart home platform using simulated sensors and actuators." />
+  <title>IoT Smart Home Platform — Demo</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#dashboard" aria-label="IoT Smart Home Platform home">
+        <span class="brand-mark">⌂</span>
+        <span><strong>Smart Home</strong><small>IoT Platform</small></span>
+      </a>
+
+      <nav class="nav" aria-label="Main navigation">
+        <button class="nav-link active" data-view="dashboard">Dashboard</button>
+        <button class="nav-link" data-view="history">History</button>
+        <a class="nav-link" href="https://github.com/costandre01/Iot-smart-home-platform" target="_blank" rel="noreferrer">GitHub ↗</a>
+      </nav>
+
+      <div class="sidebar-note">
+        <span class="status-dot"></span>
+        <div><strong>Demo Mode</strong><small>Virtual devices connected</small></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">UNIVERSITY IOT PROJECT · COMPUTER ENGINEERING · ULO</p>
+          <h1>Smart Home Control Center</h1>
+        </div>
+        <div class="topbar-actions">
+          <span class="live-pill"><span class="status-dot"></span> Live simulation</span>
+          <button id="resetDemo" class="button button-secondary" type="button">Reset demo</button>
+        </div>
+      </header>
+
+      <section id="dashboardView" class="view active" aria-labelledby="dashboard-title">
+        <div class="demo-banner">
+          <div>
+            <strong>Public portfolio demo</strong>
+            <p>The original system used Raspberry Pi, Arduino/MKR hardware, real sensors and REST APIs. This version simulates device telemetry in the browser so the complete interaction can be explored without physical hardware.</p>
+          </div>
+          <span>SIMULATED HARDWARE</span>
+        </div>
+
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Realtime telemetry</p>
+            <h2 id="dashboard-title">Environment & devices</h2>
+          </div>
+          <p id="lastUpdate" class="muted">Waiting for telemetry…</p>
+        </div>
+
+        <div class="cards-grid">
+          <article class="card air-card">
+            <div class="card-heading">
+              <div><span class="icon">◌</span><h3>Air Quality</h3></div>
+              <button class="text-button" data-history="air">View history</button>
+            </div>
+            <div class="sensor-list">
+              <div><span>Ammonia (NH₃)</span><strong><span data-sensor="amonio">--</span> ppm</strong></div>
+              <div><span>Benzene (C₆H₆)</span><strong><span data-sensor="benzeno">--</span> ppm</strong></div>
+              <div><span>Nitrogen oxides (NOx)</span><strong><span data-sensor="oxidoNitrogenio">--</span> ppm</strong></div>
+              <div><span>Carbon dioxide (CO₂)</span><strong><span data-sensor="dioxidoCarbono">--</span> ppm</strong></div>
+              <div><span>Alcohol</span><strong><span data-sensor="alcool">--</span> ppm</strong></div>
+              <div><span>Smoke proxy</span><strong><span data-sensor="fumo">--</span> ppm</strong></div>
+            </div>
+            <div class="control-row">
+              <div><strong>Buzzer</strong><small>Manual actuator</small></div>
+              <label class="switch"><input id="buzzerSwitch" type="checkbox" /><span></span></label>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-heading">
+              <div><span class="icon">°</span><h3>Climate</h3></div>
+              <button class="text-button" data-history="climate">View history</button>
+            </div>
+            <div class="metric-pair">
+              <div class="metric"><span>Temperature</span><strong><span data-sensor="temperatura">--</span>°C</strong></div>
+              <div class="metric"><span>Humidity</span><strong><span data-sensor="humidade">--</span>%</strong></div>
+            </div>
+            <div class="control-row">
+              <div><strong>Fan</strong><small>Demo actuator</small></div>
+              <label class="switch"><input id="fanSwitch" type="checkbox" /><span></span></label>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-heading">
+              <div><span class="icon">✦</span><h3>Lighting & motion</h3></div>
+              <button class="text-button" data-history="movement">View history</button>
+            </div>
+            <div class="metric-pair">
+              <div class="metric"><span>Motion distance</span><strong><span data-sensor="movimento">--</span> cm</strong></div>
+              <div class="metric"><span>Light</span><strong id="lightState">--</strong></div>
+            </div>
+            <div class="control-row">
+              <div><strong>Light</strong><small>Remote actuator</small></div>
+              <label class="switch"><input id="luzSwitch" type="checkbox" /><span></span></label>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-heading">
+              <div><span class="icon">▯</span><h3>Door</h3></div>
+              <button class="text-button" data-history="door">View history</button>
+            </div>
+            <div class="door-visual" id="doorVisual" aria-hidden="true"><span></span></div>
+            <div class="door-state"><span>Current state</span><strong id="doorState">--</strong></div>
+            <div class="control-row">
+              <div><strong>Door servo</strong><small>Remote actuator</small></div>
+              <label class="switch"><input id="portaSwitch" type="checkbox" /><span></span></label>
+            </div>
+          </article>
+        </div>
+
+        <div class="lower-grid">
+          <article class="card camera-card">
+            <div class="card-heading">
+              <div><span class="icon">▣</span><h3>Camera snapshot</h3></div>
+              <span class="tag">Raspberry Pi simulation</span>
+            </div>
+            <div id="cameraFrame" class="camera-frame">
+              <div class="camera-placeholder">
+                <span class="camera-icon">◎</span>
+                <strong>No snapshot captured</strong>
+                <small>Trigger the virtual camera to simulate the original workflow.</small>
+              </div>
+            </div>
+            <div class="camera-footer">
+              <p id="cameraTimestamp" class="muted">No capture yet</p>
+              <button id="captureButton" class="button" type="button">Capture simulated image</button>
+            </div>
+          </article>
+
+          <article class="card architecture-card">
+            <div class="card-heading"><div><span class="icon">↔</span><h3>Original architecture</h3></div></div>
+            <div class="architecture-flow">
+              <div><strong>Web Dashboard</strong><small>HTML · CSS · JS · PHP</small></div><span>↔</span>
+              <div><strong>REST API</strong><small>GET / POST</small></div><span>↔</span>
+              <div><strong>Edge devices</strong><small>Raspberry Pi · Arduino</small></div><span>↔</span>
+              <div><strong>Hardware</strong><small>Sensors · actuators</small></div>
+            </div>
+            <div class="tech-list">
+              <span>PHP</span><span>JavaScript</span><span>REST API</span><span>Python</span><span>Arduino</span><span>Raspberry Pi</span>
+            </div>
+            <p class="muted architecture-note">The portfolio demo replaces only the physical-device layer with a browser simulator; the original source code remains available in the repository.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="historyView" class="view" aria-labelledby="history-title">
+        <div class="section-heading">
+          <div><p class="eyebrow">Simulated telemetry log</p><h2 id="history-title">Sensor history</h2></div>
+          <button id="clearHistory" class="button button-secondary" type="button">Clear history</button>
+        </div>
+
+        <div class="card history-card">
+          <div class="history-toolbar">
+            <label for="historyFilter">Dataset</label>
+            <select id="historyFilter">
+              <option value="all">All telemetry</option>
+              <option value="climate">Temperature & humidity</option>
+              <option value="air">Air quality</option>
+              <option value="movement">Movement & lighting</option>
+              <option value="door">Door</option>
+            </select>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Time</th><th>Temperature</th><th>Humidity</th><th>CO₂</th><th>Movement</th><th>Light</th><th>Door</th></tr></thead>
+              <tbody id="historyBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <span>IoT Smart Home Platform · Academic project</span>
+        <span>Original project by André Costa & Luís Bento · ESTG · 2024/2025</span>
+      </footer>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>

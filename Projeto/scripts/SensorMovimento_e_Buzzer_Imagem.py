@@ -28,12 +28,12 @@ GPIO.setup(BUZZER_PIN, GPIO.OUT)
 pwm_buzzer = GPIO.PWM(BUZZER_PIN, 300)
 pwm_buzzer_start = False
 
-webcam_url = "http://10.20.229.50:4747/video"
+webcam_url = os.getenv("IOT_WEBCAM_URL", "http://127.0.0.1:4747/video")
 
 # URL da API
-API_URL = 'http://iot.dei.estg.ipleiria.pt/ti/ti139/Projeto/query/api.php'
+API_URL = os.getenv('IOT_API_URL', 'http://localhost:8080/query/api.php')
 
-UPLOAD_URL = 'http://iot.dei.estg.ipleiria.pt/ti/ti139/Projeto/query/upload.php'
+UPLOAD_URL = os.getenv('IOT_UPLOAD_URL', 'http://localhost:8080/query/upload.php')
 
 def medir_distancia():
     #Medir a distância

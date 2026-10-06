@@ -1,0 +1,12 @@
+# Local credentials / generated captures
+Projeto/files/credenciais.txt
+Projeto/scripts/captura.jpg
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Academic validation screenshots (not needed in portfolio repository)
+Projeto/validacoes.pdf
